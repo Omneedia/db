@@ -49,7 +49,7 @@ __QUERY__ = {
 			SQL.push(fields);
 			SQL.push('FROM');
 			SQL.push(table);
-			SQL.push("join unites on unites.kuni=agents.kuni");
+//			SQL.push("join unites on unites.kuni=agents.kuni");
 			SQL.push('WHERE');
 			
 			// détection des fonctions
