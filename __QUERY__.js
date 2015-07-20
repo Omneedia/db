@@ -1,4 +1,8 @@
 __QUERY__ = {
+	post: function(_db,tb,obj,cb) {
+		var db=__QUERY__.using('db');
+		db.post(_db,tb,obj,cb);
+	},
 	exec: function(o,cb)
 	{
 		var err=null;
