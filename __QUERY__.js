@@ -96,6 +96,7 @@ __QUERY__ = {
 				results.push(fields.substr(pos,fields.lengh));
 				fields=getFields(results);
 			} else var fields="*";
+			if (FIELDS.length==0) FIELDS.push('*');
 			var table=cmd.split('?')[0].split('{')[0].split('.')[0];
 			SQL.push('SELECT');
 			SQL.push(FIELDS.join(','));
