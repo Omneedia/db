@@ -188,7 +188,19 @@ __QUERY__ = {
 				msg: "BAD_RESPONSE"
 			};
 		} else {
+			console.log(o);
+			// get params
+			var xargs=[];
+			for (var el in o) {
+				if ((el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit")) {
+					xargs.push(el+'='+o[el]);
+				}
+			};
+			if (xargs.length>0) {
+				if (o.__SQL__.indexOf('?')>-1) o.__SQL__+="&"+xargs.join('&'); else o.__SQL__+="?"+xargs.join('&');
+			}
 			var QUERY=o.__SQL__.split('://');
+			console.log(o.__SQL__);
 			// no database selected
 			if (QUERY.length<2) {
 				err={
