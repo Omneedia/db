@@ -29,8 +29,8 @@ __QUERY__ = {
 				for (var i=0;i<fields.length;i++) {
 					var temoin=0;
 					var item=fields[i];
-					if (item.indexOf('+')>-1) item=item.replace('+','');
-					if (item.indexOf('-')>-1) item=item.replace('-','');
+					/*if (item.indexOf('+')>-1) item=item.replace('+','');
+					if (item.indexOf('-')>-1) item=item.replace('-','');*/
 					if (table) item=table+'.'+item;
 					if (fields[i].indexOf('->')>-1) {
 						temoin=1;
@@ -44,14 +44,26 @@ __QUERY__ = {
 						}
 					};
 					try {
-						if ((fields[i].indexOf('+')>-1) && (fields[i].indexOf('->')==-1)) {
-							ORDERBY.push(item);
-						};
-						if ((fields[i].indexOf('-')>-1) && (fields[i].indexOf('->')==-1)) {
-							ORDERBY.push(item+' DESC');
-						};
-						if (fields[i].indexOf('=')>-1) {
-							item=item.split('=')[0]+' '+fields[i].split('=')[1];
+						if (fields[i].indexOf('=')==-1) 
+						{
+							if ((fields[i].indexOf('+')>-1) && (fields[i].indexOf('->')==-1)) {
+								ORDERBY.push(item);
+								item=item.replace('+','');
+							};
+							if ((fields[i].indexOf('-')>-1) && (fields[i].indexOf('->')==-1)) {
+								ORDERBY.push(item+' DESC');
+								item=item.replace('-','');
+							};
+						}
+						else {
+							var fld=item.split('=')[0];
+							var fldvalue=item.split('=')[1];
+							if (fld.split('+').length>0) {
+								// concat
+								item="CONCAT("+fld.split('+').join(',')+") "+fldvalue;
+							} else {
+								item=fld+' '+fldvalue;
+							}							
 						};
 					} catch(e) {
 					
@@ -77,7 +89,7 @@ __QUERY__ = {
 			var FIELDS=[];
 			var JOINS=[];
 			var RELATION={};
-			// dÈtection des champs
+			// d?tection des champs
 			if (cmd.indexOf('}')>-1) {
 				var zs=cmd.indexOf('{')+1;
 				var ys=cmd.lastIndexOf('}');
@@ -117,7 +129,7 @@ __QUERY__ = {
 				
 				SQL.push('WHERE');
 				
-				// dÈtection des fonctions
+				// d?tection des fonctions
 				
 				if (cmd.indexOf('.limit(')>-1) {
 					var fcn=cmd.split('.limit(')[1].split(')')[0];
@@ -128,7 +140,7 @@ __QUERY__ = {
 					for (var i=0;i<fcn.length;i++) ORDERBY.push(fcn[i]);
 				};
 				
-				// dÈtection du query
+				// d?tection du query
 				if (cmd.indexOf('?')==-1) SQL.push('-1'); else {
 					var query=cmd.split('?')[1].split('&');
 					for (var i=0;i<query.length;i++)
@@ -171,7 +183,7 @@ __QUERY__ = {
 			
 		};
 		if (!o.__SQL__) {
-			// Pas de params __SQL__ --> Mauvaise rÈponse
+			// Pas de params __SQL__ --> Mauvaise r√©ponse
 			err={
 				msg: "BAD_RESPONSE"
 			};
