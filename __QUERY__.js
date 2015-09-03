@@ -188,11 +188,11 @@ __QUERY__ = {
 				msg: "BAD_RESPONSE"
 			};
 		} else {
-			console.log(o);
+			//console.log(o);
 			// get params
 			var xargs=[];
 			for (var el in o) {
-				if ((el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit")) {
+				if ((el!="pudid") && (el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit")) {
 					xargs.push(el+'='+o[el]);
 				}
 			};
