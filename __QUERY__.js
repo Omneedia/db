@@ -152,12 +152,18 @@ __QUERY__ = {
 						} else {
 							// OR
 							var kery=cmd.split('(')[1].split(')')[0].split('||');
-							SQL.push('(');
-							for (var i=0;i<kery.length;i++) {
-								if (i>0) SQL.push('OR');
-								query_fields(kery[i]);
-							};
-							SQL.push(')');
+							if (kery.length==1) {
+								// fonction
+								console.log('FONCTION');
+								query_fields(query[i]);
+							} else {
+								SQL.push('(');
+								for (var i=0;i<kery.length;i++) {
+									if (i>0) SQL.push('OR');
+									query_fields(kery[i]);
+								};
+								SQL.push(')');
+							}
 						};
 					}
 				};
