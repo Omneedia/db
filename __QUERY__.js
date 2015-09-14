@@ -19,6 +19,10 @@ __QUERY__ = {
 						//in
 						SQL.push(q.split('=')[0]+' in ('+q.split('=')[1].split('[')[1].split(']')[0]+')');
 					} else {
+						// cas d'une fonction
+						if (q.indexOf('(')>-1)
+						SQL.push(q.split('=')[0]+'='+q.split('=')[1]+'');
+						else
 						SQL.push(q.split('=')[0]+'="'+q.split('=')[1]+'"');
 					}
 				}
@@ -29,8 +33,6 @@ __QUERY__ = {
 				for (var i=0;i<fields.length;i++) {
 					var temoin=0;
 					var item=fields[i];
-					/*if (item.indexOf('+')>-1) item=item.replace('+','');
-					if (item.indexOf('-')>-1) item=item.replace('-','');*/
 					if (table) item=table+'.'+item;
 					if (fields[i].indexOf('->')>-1) {
 						temoin=1;
@@ -60,6 +62,14 @@ __QUERY__ = {
 							var fldvalue=item.split('=')[1];
 							if (fld.split('+').length>0) {
 								// concat
+								if (fldvalue.indexOf('+')>-1) {
+									fldvalue=fldvalue.split('+')[0];
+									ORDERBY.push(fldvalue);
+								};
+								if (fldvalue.indexOf('-')>-1) {
+									fldvalue=fldvalue.split('-')[0];
+									ORDERBY.push(fldvalue+' DESC');
+								};
 								item="CONCAT("+fld.split('+').join(',')+") "+fldvalue;
 							} else {
 								item=fld+' '+fldvalue;
@@ -129,7 +139,7 @@ __QUERY__ = {
 				
 				SQL.push('WHERE');
 				
-				// d?tection des fonctions
+				// detection des fonctions
 				
 				if (cmd.indexOf('.limit(')>-1) {
 					var fcn=cmd.split('.limit(')[1].split(')')[0];
@@ -140,7 +150,7 @@ __QUERY__ = {
 					for (var i=0;i<fcn.length;i++) ORDERBY.push(fcn[i]);
 				};
 				
-				// d?tection du query
+				// detection du query
 				if (cmd.indexOf('?')==-1) SQL.push('-1'); else {
 					var query=cmd.split('?')[1].split('&');
 					for (var i=0;i<query.length;i++)
