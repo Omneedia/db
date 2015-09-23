@@ -117,20 +117,26 @@ __QUERY__ = {
 				};
 				results.push(fields.substr(pos,fields.lengh));
 				fields=getFields(results);
-			} else var fields="*";
-			if (FIELDS.length==0) FIELDS.push('*');
+			} else var fields=table+".*";
+			if (FIELDS.length==0) FIELDS.push(table+'.*');
 			var table=cmd.split('?')[0].split('{')[0].split('.')[0];
 			SQL.push('SELECT');
-			SQL.push(FIELDS.join(','));
-			SQL.push('FROM');
-			SQL.push(table);
 			// JOINS
 			var external=[];
 			for (var i=0;i<FIELDS.length;i++) {
 				if (FIELDS[i].indexOf('.')>-1) {
-					if (external.indexOf(FIELDS[i].split('.')[0])==-1) external.push(FIELDS[i].split('.')[0]);
+					if (external.indexOf(FIELDS[i].split('.')[0])==-1) {
+						if (FIELDS[i].split('.')[1]!="*") {
+							external.push(FIELDS[i].split('.')[0]);
+						} else FIELDS[i]=FIELDS[i].replace(/undefined/g,table);
+					}
+				} else {
+					if (FIELDS[i].indexOf('(')==-1) FIELDS[i]=table+'.'+FIELDS[i];
 				}
 			};
+			SQL.push(FIELDS.join(','));
+			SQL.push('FROM');
+			SQL.push(table);
 			getNDX(external,0,function(t) {
 				
 				for (var i=0;i<JOINS.length;i++) {
