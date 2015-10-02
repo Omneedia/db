@@ -164,6 +164,7 @@ __QUERY__ = {
 						if (query[i].indexOf('(')==-1) {
 							// AND
 							if (i>0) SQL.push('AND');
+							if (query[i].indexOf('.')==-1) query[i]=table+'.'+query[i];
 							query_fields(query[i]);
 						} else {
 							// OR
@@ -176,6 +177,7 @@ __QUERY__ = {
 								SQL.push('(');
 								for (var i=0;i<kery.length;i++) {
 									if (i>0) SQL.push('OR');
+									if (kery[i].indexOf('.')==-1) kery[i]=table+'.'+kery[i];
 									query_fields(kery[i]);
 								};
 								SQL.push(')');
