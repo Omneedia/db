@@ -3,6 +3,10 @@ __QUERY__ = {
 		var db=__QUERY__.using('db');
 		db.post(_db,tb,obj,cb);
 	},
+	del: function(_db,tb,obj,cb) {
+		var db=__QUERY__.using('db');
+		db.del(_db,tb,obj,cb);
+	},
 	exec: function(o,cb)
 	{
 		var err=null;
@@ -99,7 +103,16 @@ __QUERY__ = {
 			var FIELDS=[];
 			var JOINS=[];
 			var RELATION={};
-			// d?tection des champs
+			// detection des champs
+			console.log(cmd);
+			if (cmd=="*") {
+				db.model(_db,"SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = '"+_db+"'",cb);
+				return;
+			};
+			if (cmd.indexOf('@')==1) {
+				db.model(_db,"select * from information_schema.columns where table_schema = '"+cmd.split('@')[1]+"' order by ordinal_position,table_name",cb);
+				return;
+			};
 			if (cmd.indexOf('}')>-1) {
 				var zs=cmd.indexOf('{')+1;
 				var ys=cmd.lastIndexOf('}');
