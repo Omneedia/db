@@ -109,8 +109,12 @@ __QUERY__ = {
 				db.model(_db,"SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = '"+_db+"'",cb);
 				return;
 			};
-			if (cmd.indexOf('@')==1) {
-				db.model(_db,"select * from information_schema.columns where table_schema = '"+cmd.split('@')[1]+"' order by ordinal_position,table_name",cb);
+			if (cmd.indexOf('@')==0) {
+				db.model(_db,"select * from information_schema.columns where table_schema = '"+_db+"' and table_name = '"+cmd.split('@')[1]+"' order by ordinal_position,table_name",function(e,r){
+					console.log(e);
+					console.log(r);
+					cb(e,r);
+				});
 				return;
 			};
 			if (cmd.indexOf('}')>-1) {
