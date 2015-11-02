@@ -17,11 +17,21 @@ __QUERY__ = {
 				// =
 				if (q.split('=')[1].indexOf('*')>-1) {
 					// like
-					SQL.push(q.split('=')[0]+' like "'+q.split('=')[1].replace(/\*/g,'%')+'"');
+					if (q.indexOf('!=')>-1) {
+						SQL.push(q.split('!=')[0]+' not like "'+q.split('=')[1].replace(/\*/g,'%')+'"');
+					} else {
+						SQL.push(q.split('=')[0]+' like "'+q.split('=')[1].replace(/\*/g,'%')+'"');
+					};
+					if (q.indexOf('!=')>-1) var _like='not like'; else _like='like';
+					
 				} else {
 					if (q.split('=')[1].indexOf('[')>-1) {
 						//in
-						SQL.push(q.split('=')[0]+' in ('+q.split('=')[1].split('[')[1].split(']')[0]+')');
+						if (q.indexOf('!=')>-1) {
+							SQL.push(q.split('!=')[0]+' not in ('+q.split('=')[1].split('[')[1].split(']')[0]+')');
+						} else {
+							SQL.push(q.split('=')[0]+' in ('+q.split('=')[1].split('[')[1].split(']')[0]+')');
+						};						
 					} else {
 						// cas d'une fonction
 						if (q.indexOf('(')>-1)
@@ -233,7 +243,12 @@ __QUERY__ = {
 			// get params
 			var xargs=[];
 			for (var el in o) {
-				if ((el!="pudid") && (el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit")) {
+				console.log(el);
+				/*if (el=="filter") {
+					var t=o["filter"];
+					for (var k=0;k<t.length;k++) xargs.push(t[k].property+'='+t[k].value);
+				};*/
+				if ((el!="pudid") && (el!="filter") && (el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit")) {
 					xargs.push(el+'='+o[el]);
 				}
 			};
