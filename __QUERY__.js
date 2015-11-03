@@ -12,6 +12,39 @@ __QUERY__ = {
 		var err=null;
 		var response=null;
 		var SQL=[];
+		function qstr(str) {
+			//if (typeof str === 'object') return "";
+			if (str=="null") return "NULL";
+			try {
+				var obj='\''+str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+					switch (char) {
+						case "\0":
+							return "\\0";
+						case "\x08":
+							return "\\b";
+						case "\x09":
+							return "\\t";
+						case "\x1a":
+							return "\\z";
+						case "\n":
+							return "\\n";
+						case "\r":
+							return "\\r";
+						case "%":
+							return "%";
+						case "\"":
+						case "'":
+						case "\\":
+							return "\\"+char; // prepends a backslash to backslash, percent,
+											  // and double/single quotes
+					}
+				})+'\'';
+			} catch(e) {
+				return '\''+str+'\'';
+			};
+			return obj;
+		};
+		
 		function query_fields(q) {
 			if (q.indexOf('=')>-1) {
 				// =
@@ -36,8 +69,9 @@ __QUERY__ = {
 						// cas d'une fonction
 						if (q.indexOf('(')>-1)
 						SQL.push(q.split('=')[0]+'='+q.split('=')[1]+'');
-						else
-						SQL.push(q.split('=')[0]+'="'+q.split('=')[1]+'"');
+						else {
+							SQL.push(q.split('=')[0]+'='+qstr(q.split('=')[1]));
+						}
 					}
 				}
 			}
@@ -113,16 +147,15 @@ __QUERY__ = {
 			var FIELDS=[];
 			var JOINS=[];
 			var RELATION={};
+			
 			// detection des champs
-			console.log(cmd);
+			
 			if (cmd=="*") {
 				db.model(_db,"SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = '"+_db+"'",cb);
 				return;
 			};
 			if (cmd.indexOf('@')==0) {
 				db.model(_db,"select * from information_schema.columns where table_schema = '"+_db+"' and table_name = '"+cmd.split('@')[1]+"' order by ordinal_position,table_name",function(e,r){
-					console.log(e);
-					console.log(r);
 					cb(e,r);
 				});
 				return;
@@ -164,6 +197,7 @@ __QUERY__ = {
 			SQL.push(FIELDS.join(','));
 			SQL.push('FROM');
 			SQL.push(table);
+
 			getNDX(external,0,function(t) {
 				
 				for (var i=0;i<JOINS.length;i++) {
@@ -239,11 +273,11 @@ __QUERY__ = {
 				msg: "BAD_RESPONSE"
 			};
 		} else {
-			//console.log(o);
+
 			// get params
 			var xargs=[];
 			for (var el in o) {
-				console.log(el);
+				//console.log(el);
 				/*if (el=="filter") {
 					var t=o["filter"];
 					for (var k=0;k<t.length;k++) xargs.push(t[k].property+'='+t[k].value);
@@ -254,7 +288,8 @@ __QUERY__ = {
 			};
 			if (xargs.length>0) {
 				if (o.__SQL__.indexOf('?')>-1) o.__SQL__+="&"+xargs.join('&'); else o.__SQL__+="?"+xargs.join('&');
-			}
+			};
+
 			var QUERY=o.__SQL__.split('://');
 			console.log(o.__SQL__);
 			// no database selected
