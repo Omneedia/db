@@ -125,7 +125,6 @@ __QUERY__ = {
 						var ys=item.lastIndexOf('}');
 						var fields=item.substr(zs,ys-zs).split(',');
 						for (var z=0;z<fields.length;z++) {
-							//fields[z]=item.split('->')[0]+'->'+tbl+'.'+fields[z];
 							if (fields[z].indexOf('+')>-1) {
 								var value=fields[z].split('=')[1];
 								fields[z]=fields[z].split('=')[0];
@@ -139,14 +138,13 @@ __QUERY__ = {
 									fields[z]=concat.join('+')+'='+value;
 								}
 							}
-						};
-						
+						};						
 						getFields(fields,table);
 						return;
 					};
 					
 					// detect =			
-					if (item.indexOf('=')==-1) {			
+					if (item.indexOf('=')==-1) {
 						// Pas un champ calculé
 						// Si le champ n'a pas de table de référence, on écrit celle courante
 						if (item.indexOf('.')==-1) item=table+'.'+item; else {
@@ -166,8 +164,9 @@ __QUERY__ = {
 						FIELDS.push(item);				
 					} else {
 						// C'est un champ calculé
-						var value=item.split('=')[1];	
-						var item=item.split('=')[0];
+						var lasteq=item.lastIndexOf('=');
+						var value=item.substr(lasteq+1,item.length);	
+						var item=item.substr(0,lasteq);
 						// Concaténation ?
 						if (item.indexOf('+')>-1) {
 							var items=item.split('+');
@@ -202,8 +201,8 @@ __QUERY__ = {
 									value=value.split('-')[0];
 									ORDERBY.push(value+' DESC');
 								};					
-								FIELDS.push(method+'('+args+') '+value);						
-							} else FIELDS.push(item+' '+value);
+								FIELDS.push(method+'('+args.replace(/;/g,',')+') '+value);						
+							} else FIELDS.push(item.replace(/;/g,',')+' '+value);
 						}
 					}
 				}
@@ -212,7 +211,6 @@ __QUERY__ = {
 			// using DB library
 			
 			var db=__QUERY__.using('db');			
-			//var db=require('db');
 			
 			var SQL=[];
 			var cmd=o[1];
