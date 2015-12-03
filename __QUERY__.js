@@ -189,7 +189,6 @@ __QUERY__ = {
 							};					
 							FIELDS.push("CONCAT("+CONCAT.join(',')+") "+value);
 						} else {
-							// c'est une fonction !
 							// détecte une fonction
 							if ((item.indexOf('(')>-1) && (item.indexOf(')')>-1)) {
 								var method=item.substr(0,item.indexOf('(')).toUpperCase();
@@ -204,7 +203,7 @@ __QUERY__ = {
 									ORDERBY.push(value+' DESC');
 								};					
 								FIELDS.push(method+'('+args+') '+value);						
-							}
+							} else FIELDS.push(item+' '+value);
 						}
 					}
 				}
