@@ -104,11 +104,17 @@ __QUERY__ = {
 					RELATION[item.split('.')[0].split('->')[1]]=table+'.'+item.split('->')[0];
 					TABLES.push(item.split('.')[0].split('->')[1]);
 				} else {
-					if (item.split('.')[1]) {
-						ITEM=item.split('.')[0]+'.'+item.split('.')[1];
-						TABLES.push(item.split('.')[0]);
-					} else ITEM=table+'.'+item;							
-				}
+					if (item.split('.').length>2) {
+						ITEM=item.split('.')[1]+'.'+item.split('.')[2];
+						RELATION[item.split('.')[1]]="*"+item.split('.')[0].trim();
+						TABLES.push(item.split('.')[1]);
+					} else {
+						if (item.split('.')[1]) {
+							ITEM=item.split('.')[0]+'.'+item.split('.')[1];
+							TABLES.push(item.split('.')[0]);
+						} else ITEM=table+'.'+item;
+					}
+				};
 				return ITEM;
 			};
 			 
@@ -297,7 +303,13 @@ __QUERY__ = {
 				for (var i=0;i<TABLES.length;i++) {
 					if (joins[TABLES[i]]) JOINS.push(joins[TABLES[i]]); else {
 						// on a pas pu trouver de jointure implicite (myISAM par exemple), on en cherche une implicite
-						if (RELATION[TABLES[i]]) JOINS.push("LEFT JOIN "+TABLES[i]+" ON "+primary[TABLES[i]]+'='+RELATION[TABLES[i]]);
+						if (RELATION[TABLES[i]]) {
+							if (RELATION[TABLES[i]].indexOf("*")>-1) {
+								// S'il y a une jointure multiple
+								var ttt=RELATION[TABLES[i]].split('*')[1];
+								JOINS.push("LEFT JOIN "+TABLES[i]+" ON "+primary[TABLES[i]]+'='+primary[ttt]);	
+							} else JOINS.push("LEFT JOIN "+TABLES[i]+" ON "+primary[TABLES[i]]+'='+RELATION[TABLES[i]]);
+						}
 					}
 				};
 
