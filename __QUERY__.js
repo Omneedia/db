@@ -302,13 +302,16 @@ __QUERY__ = {
 				TABLES=cleanArray(TABLES);
 				for (var i=0;i<TABLES.length;i++) {
 					if (joins[TABLES[i]]) JOINS.push(joins[TABLES[i]]); else {
-						// on a pas pu trouver de jointure implicite (myISAM par exemple), on en cherche une implicite
+						// on a pas pu trouver de jointure implicite (myISAM par exemple), on en cherche une explicite
 						if (RELATION[TABLES[i]]) {
 							if (RELATION[TABLES[i]].indexOf("*")>-1) {
 								// S'il y a une jointure multiple
 								var ttt=RELATION[TABLES[i]].split('*')[1];
 								JOINS.push("LEFT JOIN "+TABLES[i]+" ON "+primary[TABLES[i]]+'='+primary[ttt]);	
 							} else JOINS.push("LEFT JOIN "+TABLES[i]+" ON "+primary[TABLES[i]]+'='+RELATION[TABLES[i]]);
+						} else {
+							// Pas de jointure explicite, on déclare une jointure par clé liée (table1.kage=table2.kage)
+							JOINS.push("LEFT JOIN "+TABLES[i]+" ON "+primary[TABLES[i]]+'='+table+'.'+primary[TABLES[i]].split('.')[1]);
 						}
 					}
 				};
