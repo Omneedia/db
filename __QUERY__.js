@@ -12,7 +12,6 @@ __QUERY__ = {
 		var err=null;
 		var response=null;
 		var SQL=[];
-		
 		function querycommander(o,cb) {
 					
 			/*
@@ -407,7 +406,7 @@ __QUERY__ = {
 			if (xargs.length>0) {
 				if (o.__SQL__.indexOf('?')>-1) o.__SQL__+="&"+xargs.join('&'); else o.__SQL__+="?"+xargs.join('&');
 			};
-
+				
 			var QUERY=o.__SQL__.split('://');
 			
 			// no database selected
