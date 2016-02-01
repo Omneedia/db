@@ -133,7 +133,9 @@ __QUERY__ = {
 					var item=r[i];
 					
 					// nested table
-					if (item.indexOf('{')>-1) {				
+					if (item.indexOf('{')>-1) {
+						// TODO !!! 
+						// PREVOIR LE CAS ou il n'y a pas de ->
 						var tbl=item.split('->')[1].split('{')[0];					
 						var zs=item.indexOf('{')+1;
 						var ys=item.lastIndexOf('}');
@@ -221,7 +223,11 @@ __QUERY__ = {
 					}
 				}
 			};
-			 
+			
+			/***************
+			main
+			****************/
+			
 			// using DB library
 			
 			try {
@@ -285,7 +291,8 @@ __QUERY__ = {
 						pos=i+1;
 					};
 				};
-				results.push(fields.substr(pos,fields.lengh));		
+				results.push(fields.substr(pos,fields.lengh));	
+				
 				getFields(results,table);
 			};
 
@@ -453,7 +460,10 @@ __QUERY__ = {
 			if (xargs.length>0) {
 				if (o.__SQL__.indexOf('?')>-1) o.__SQL__+="&"+xargs.join('&'); else o.__SQL__+="?"+xargs.join('&');
 			};
-					
+			
+			
+			
+			
 			if (o.__SQL__.indexOf('?')>-1) {
 				var tt=o.__SQL__.split('?')[1].split('&');
 				var cc={};
@@ -465,7 +475,9 @@ __QUERY__ = {
 					} else listargs.push(cp);
 				};				
 				for (var el in cc) listargs.push(el+'='+cc[el]);
+				//console.log(listargs);
 				o.__SQL__=o.__SQL__.split('?')[0]+'?'+listargs.join('&');
+
 			};
 			
 			var QUERY=o.__SQL__.split('://');
