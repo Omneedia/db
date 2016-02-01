@@ -309,7 +309,17 @@ __QUERY__ = {
 			
 			// Traitement des jointures
 			// Si c'est une innoDB
-			var sql="select CONSTRAINT_NAME, TABLE_NAME,COLUMN_NAME, REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where CONSTRAINT_SCHEMA='"+_db+"' order by TABLE_NAME";
+			var m=MSettings.db;
+			var temoin=false;
+			for (var i=0;i<m.length;i++) {
+				var ___db=m[i];
+				if (___db.name==_db) {
+					var uri=___db.uri;
+					var pos=uri.lastIndexOf('/');
+					var __db__=uri.substr(pos+1,255);
+				}
+			};
+			var sql="select CONSTRAINT_NAME, TABLE_NAME,COLUMN_NAME, REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME from INFORMATION_SCHEMA.KEY_COLUMN_USAGE where CONSTRAINT_SCHEMA='"+__db__+"' order by TABLE_NAME";
 			db.query(_db,sql,function(e,r) {
 				var joins={};
 				var primary={};				
