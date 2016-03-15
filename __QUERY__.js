@@ -462,17 +462,23 @@ __QUERY__ = {
 			
 			// get params
 			var xargs=[];
+			var lbegin=-1;
+			var llimit=-1;
 			for (var el in o) {
-				if ((el!="pudid") && (el!="filter") && (el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit")) {
+				if ((el!="pudid") && (el!="filter") && (el!="page") && (el!="query") && (el!="__SQL__") && (el!="start") && (el!="limit") && (el!="group") && (el!="sort") && (el!="quest")) {
 					xargs.push(el+'='+o[el]);
+				} else {
+					console.log(el+"="+JSON.stringify(o[el]));
+					if (el=="start") lbegin=o[el];
+					if (el=="limit") llimit=o[el];
+					if (el=="quest") var QUEST=o[el];
+					//if ((lbegin!=-1) && (lbegin!=-1)) LIMIT.push(lbegin+','+llimit);
 				}
 			};
+			
 			if (xargs.length>0) {
 				if (o.__SQL__.indexOf('?')>-1) o.__SQL__+="&"+xargs.join('&'); else o.__SQL__+="?"+xargs.join('&');
 			};
-			
-			
-			
 			
 			if (o.__SQL__.indexOf('?')>-1) {
 				var tt=o.__SQL__.split('?')[1].split('&');
@@ -485,9 +491,22 @@ __QUERY__ = {
 					} else listargs.push(cp);
 				};				
 				for (var el in cc) listargs.push(el+'='+cc[el]);
-				//console.log(listargs);
+				//console.log(listargs);				
+				if (QUEST) {
+					console.log('--- QUEST -----------------------------------------');
+					QUEST=JSON.parse(QUEST);
+					for (var i=0;i<QUEST.length;i++) {
+						console.log(QUEST[i]);
+						var str="";
+						if (i!=0) {
+							str=' '+QUEST[i].operator+' ';
+						};
+						str+=QUEST[i].name;
+						str+=QUEST[i].value;
+						listargs.push(str);
+					}
+				};
 				o.__SQL__=o.__SQL__.split('?')[0]+'?'+listargs.join('&');
-
 			};
 			
 			var QUERY=o.__SQL__.split('://');
