@@ -35,7 +35,7 @@
     "url": "https://github.com/Omneedia/db/issues"
   },
   "dependencies": {
-    
+    "mysql": "*"
   },
   "_id": "db@1.0.0",
   "dist": {
