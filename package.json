@@ -37,7 +37,7 @@
   "dependencies": {
     "mysql": "*"
   },
-  "_id": "db@1.0.0",
+  "_id": "db@1.0.3a",
   "dist": {
   },
   "_resolved": "git+https://git@github.com/Omneedia/db.git",
