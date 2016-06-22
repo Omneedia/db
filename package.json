@@ -6,7 +6,7 @@
   },
   "name": "db",
   "description": "DB Wrapper for omneedia framework",
-  "version": "1.0.3",
+  "version": "1.0.3a",
   "keywords": [
   ],
   "homepage": "https://github.com/Omneedia/db",
