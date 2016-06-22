@@ -107,7 +107,7 @@ __QUERY__ = {
 			function compute_item(item,table)
 			{
 				var ITEM="";
-				if (item.split('.')[0].indexOf('->')>-1) {
+				if (item.split('.')[0].indexOf('->')>-1) {					
 					ITEM=item.split('->')[1];
 					RELATION[item.split('.')[0].split('->')[1]]=table+'.'+item.split('->')[0];
 					TABLES.push(item.split('.')[0].split('->')[1]);
@@ -166,6 +166,7 @@ __QUERY__ = {
 						if (item.indexOf('.')==-1) item=table+'.'+item; else {
 							// On ajoute la table aux TABLES
 							// détecte s'il y a une liaison explicite
+							console.log('***************************************');
 							item=compute_item(item,table);
 						};
 						// On détecte le champ Order + ou -
@@ -485,13 +486,33 @@ __QUERY__ = {
 				var cc={};
 				var listargs=[];
 				for (var i=0;i<tt.length;i++) {
-					var cp=tt[i];
+					var cp=tt[i].split('/')[0];
 					if (cp.indexOf('=')>-1) {
-						cc[cp.split('=')[0]]=cp.split('=')[1];
-					} else listargs.push(cp);
+						var value=cp.split('=')[1];
+						if (value.indexOf('[')>-1) {
+							var ll=value.substr(value.indexOf('[')+1,value.indexOf(']'));
+							if (ll.indexOf('{')>-1) {
+								var ll_tb=ll.split('{')[0];
+								var ll_item=ll.split('{')[1].split('}')[0];
+								listargs.push(cp.split('=')[0]+' IN (SELECT '+ll_item+' FROM '+ll_tb+')');
+							};
+						} else cc[cp.split('=')[0]]=cp.split('=')[1];
+					} else {
+						if (cp.indexOf('<>')>-1) {
+							var value=cp.split('<>')[1];
+							if (value.indexOf('[')>-1) {
+								var ll=value.substr(value.indexOf('[')+1,value.indexOf(']'));
+								if (ll.indexOf('{')>-1) {
+									var ll_tb=ll.split('{')[0];
+									var ll_item=ll.split('{')[1].split('}')[0];
+									listargs.push(cp.split('<>')[0]+' NOT IN (SELECT '+ll_item+' FROM '+ll_tb+')');
+								};
+							} else listargs.push(cp.split('<>')[0]+' <> '+value);
+						} else listargs.push(cp);
+					}
 				};				
 				for (var el in cc) listargs.push(el+'='+cc[el]);
-				//console.log(listargs);				
+				console.log(listargs);				
 				if (QUEST) {
 					console.log('--- QUEST -----------------------------------------');
 					QUEST=JSON.parse(QUEST);
