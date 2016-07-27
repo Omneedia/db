@@ -21,7 +21,14 @@ __QUERY__ = {
 		var response=null;
 		var SQL=[];
 		function querycommander(o,PARAMS,cb) {
-					
+			var OUTPUT="-1";
+			for (var i=0;i<o.length;i++) {
+				if (o[i].indexOf(':')>-1) {
+					OUTPUT=o[i].split(':')[1];
+					o[i]=o[i].split(':')[0];					
+				}
+			};
+			
 			/*
 			 * Private functions
 			 * Queries
@@ -445,9 +452,11 @@ __QUERY__ = {
 				console.log(o.join('://'));
 				SQL=SQL.join(' ');
 				console.log(SQL);
+				console.log("output="+OUTPUT);
 				console.log('------------------------------');
 				
-				db.model(o[0],SQL,cb);
+				if (OUTPUT=='-1') db.model(o[0],SQL,cb);
+				if (OUTPUT=='raw') db.query(o[0],SQL,cb);
 
 			});			
 			
