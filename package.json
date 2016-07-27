@@ -6,7 +6,7 @@
   },
   "name": "db",
   "description": "DB Wrapper for omneedia framework",
-  "version": "1.0.3e",
+  "version": "1.0.4",
   "keywords": [
   ],
   "homepage": "https://github.com/Omneedia/db",
@@ -37,7 +37,7 @@
   "dependencies": {
     "mysql": "*"
   },
-  "_id": "db@1.0.3e",
+  "_id": "db@1.0.4",
   "dist": {
   },
   "_resolved": "git+https://git@github.com/Omneedia/db.git",
