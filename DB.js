@@ -29,7 +29,7 @@ module.exports={
 				if (sp.indexOf('=')>-1) {
 					sp=sp.split('=')[1];
 				};
-				console.log(sp);
+				//console.log(sp);
 				obj=sp.split(',');
 			}
 		};
