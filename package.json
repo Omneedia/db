@@ -1,53 +1,45 @@
 {
-  "_args": [
-    [
-      "db@git+https://github.com/Omneedia/db.git#master",
-      "/Users/zucatti/Desktop/omneedia.app/Contents/MacOS/bin"
-    ]
-  ],
-  "_from": "git+https://github.com/Omneedia/db.git#master",
-  "_id": "db@1.0.3-e",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/db",
+  "_from": "@omneedia/db",
+  "_id": "@omneedia/db@1.0.4",
+  "_inBundle": false,
+  "_integrity": "sha1-9DIigoFl2Ky9JFY+jxjHciFsXuY=",
+  "_location": "/@omneedia/db",
   "_phantomChildren": {},
   "_requested": {
-    "hosted": {
-      "directUrl": "https://raw.githubusercontent.com/Omneedia/db/master/package.json",
-      "gitUrl": "git://github.com/Omneedia/db.git#master",
-      "httpsUrl": "git+https://github.com/Omneedia/db.git#master",
-      "shortcut": "github:Omneedia/db#master",
-      "ssh": "git@github.com:Omneedia/db.git#master",
-      "sshUrl": "git+ssh://git@github.com/Omneedia/db.git#master",
-      "type": "github"
-    },
-    "name": "db",
-    "raw": "db@git+https://github.com/Omneedia/db.git#master",
-    "rawSpec": "git+https://github.com/Omneedia/db.git#master",
-    "scope": null,
-    "spec": "git+https://github.com/Omneedia/db.git#master",
-    "type": "hosted"
+    "type": "tag",
+    "registry": true,
+    "raw": "@omneedia/db",
+    "name": "@omneedia/db",
+    "escapedName": "@omneedia%2fdb",
+    "scope": "@omneedia",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "git+https://github.com/Omneedia/db.git#40deae750bb76c7835cf9f78be85875d22b62dd6",
-  "_shasum": "93bcafeb42827face024bf63e68e07d0ba85cb5d",
-  "_shrinkwrap": null,
-  "_spec": "db@git+https://github.com/Omneedia/db.git#master",
-  "_where": "/Users/zucatti/Desktop/omneedia.app/Contents/MacOS/bin",
+  "_resolved": "https://registry.npmjs.org/@omneedia/db/-/db-1.0.3.tgz",
+  "_shasum": "f43222828165d8acbd24563e8f18c772216c5ee6",
+  "_spec": "@omneedia/db",
+  "_where": "/Users/zucatti/Desktop/db",
   "author": {
-    "email": "stephane.zucatti@me.com",
     "name": "Stephane Zucatti",
+    "email": "stephane.zucatti@me.com",
     "url": "http://omneedia.com"
   },
   "bugs": {
-    "url": "https://github.com/Omneedia/db/issues"
+    "url": "https://github.com/omneedia/db/issues"
   },
+  "bundleDependencies": false,
   "contributors": [],
   "dependencies": {
-    "mysql": "*"
+    "mysql": "*",
+    "request": "^2.83.0",
+    "shortid": "^2.2.8"
   },
+  "deprecated": false,
   "description": "DB Wrapper for omneedia framework",
   "devDependencies": {},
   "dist": {},
@@ -55,19 +47,16 @@
     "node": ">=0.6.15"
   },
   "gitHead": "40deae750bb76c7835cf9f78be85875d22b62dd6",
-  "homepage": "https://github.com/Omneedia/db",
+  "homepage": "https://github.com/omneedia/db",
   "keywords": [],
   "license": "MIT",
   "main": "./lib/index.js",
-  "name": "db",
+  "name": "@omneedia/db",
   "optionalDependencies": {},
-  "private": "true",
-  "readme": "ERROR: No README data found!",
-  "readmeFilename": "",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Omneedia/db.git"
+    "url": "git://github.com/omneedia/db.git"
   },
   "scripts": {},
-  "version": "1.0.3-e"
+  "version": "1.0.4"
 }
