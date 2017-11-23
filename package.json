@@ -1,6 +1,6 @@
 {
   "_from": "@omneedia/db",
-  "_id": "@omneedia/db@1.0.4",
+  "_id": "@omneedia/db@1.0.5",
   "_inBundle": false,
   "_integrity": "sha1-9DIigoFl2Ky9JFY+jxjHciFsXuY=",
   "_location": "/@omneedia/db",
@@ -58,5 +58,5 @@
     "url": "git://github.com/omneedia/db.git"
   },
   "scripts": {},
-  "version": "1.0.4"
+  "version": "1.0.5"
 }
